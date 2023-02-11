@@ -1,7 +1,6 @@
 import { MongoClient, ServerApiVersion } from 'mongodb'
-import { MONGODB_URI, MONGODB_DB } from '$env/static/private'
 
-const uri = MONGODB_URI
+const uri = "mongodb+srv://angella:Heavenc1t1zens@rockssvelte.tiqf9zy.mongodb.net/?retryWrites=true&w=majority"
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 export function start_mongo() {
@@ -12,4 +11,4 @@ export function start_mongo() {
   });
 }
 
-export default client.db(MONGODB_DB)
+export default client.db("rock-db")
