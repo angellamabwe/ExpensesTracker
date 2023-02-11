@@ -45,10 +45,6 @@
 		color: #fff;
 	}
 
-	ul {
-		list-style: none;
-	}
-
 	.container {
 		max-width: 768px;
 		margin: 100px auto;

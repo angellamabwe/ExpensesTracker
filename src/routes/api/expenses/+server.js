@@ -8,12 +8,21 @@ export const GET = async () => {
 
 }
 
-export const POST = async ({ request }) => {
-  const authHeader = request.headers.get('Authorization')
-  const body = await request.json()
-  console.log(body)
-  if (authHeader !== 'Myauthheader') {
-    return new Response(JSON.stringify({ message: "Invalid credentials" }, { status: 401 }))
+export async function post(request) {
+  const exp = JSON.parse(request.body);
+  const newExp = await expenses.insertOne(exp);
+  return {
+    status: 201,
+    body: {
+      newExp
+    }
   }
-  return new Response(JSON.stringify({ message: "Successful" }, { status: 201 }))
 }
+
+export async function del(id) {
+  expenses.remove({ id: id })
+  return {
+    status: 200
+  }
+}
+

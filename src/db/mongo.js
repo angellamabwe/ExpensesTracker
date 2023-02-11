@@ -6,7 +6,6 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 export function start_mongo() {
   console.log('Starting mongo...');
   return client.connect(err => {
-    const collection = client.db("rock-db").collection("expenses");
     client.close();
   });
 }
