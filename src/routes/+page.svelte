@@ -1,23 +1,43 @@
 <script>
-	import { ExpenseStore } from '../stores';
 	import ExpenseList from '../components/ExpenseList.svelte';
-	import ExpenseStats from '../components/ExpenseStats.svelte';
 	import AddExpense from '../components/AddExpense.svelte';
 	export let data;
 
-	ExpenseStore.update((currentFeedback) => {
-		return [...currentFeedback, ...data.expenses];
-	});
+	// console.log('DATA', data);
+	const AddNewExpense = async (newExpense) => {
+		try {
+			await fetch('/api/expenses', {
+				method: 'POST',
+				body: JSON.stringify(newExpense)
+			});
+			getLatest();
+		} catch (error) {
+			alert('An error occurred');
+		}
+	};
 
-	// ExpenseStore.update(() => {
-	// 	return [...data.expenses];
-	// });
+	const handleDelete = async (item) => {
+		try {
+			await fetch('/api/expenses', {
+				method: 'DELETE',
+				body: JSON.stringify(item)
+			});
+			getLatest();
+		} catch (err) {
+			alert('An error occurred');
+		}
+	};
+
+	const getLatest = async () => {
+		const res = await fetch('/api/expenses');
+		const jsonRes = await res.json();
+		data = jsonRes;
+	};
 </script>
 
 <main class="container">
-	<ExpenseStats />
-	<AddExpense />
-	<ExpenseList />
+	<AddExpense on:add-expense={AddNewExpense} />
+	<ExpenseList expenses={data.expenses} on:delete-expense={handleDelete} />
 </main>
 
 <div />

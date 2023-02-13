@@ -1,18 +1,15 @@
 <script>
-	import { ExpenseStore } from '../stores';
 	import Card from './Card.svelte';
+	import { createEventDispatcher } from 'svelte';
 	export let item;
-
-	const handleDelete = (itemId) => {
-		console.log('Deleteing', itemId);
-		ExpenseStore.update((currentExpense) => {
-			return currentExpense.filter((item) => item.id != itemId);
-		});
+	const dispatch = createEventDispatcher();
+	const deleteExp = async () => {
+		dispatch('delete-expense', item);
 	};
 </script>
 
 <Card>
-	<button class="close" on:click={() => handleDelete(item.id)}>X</button>
+	<button class="close" on:click={() => deleteExp(item)}>X</button>
 	<p class="text-display">
 		Item: {item.title}
 	</p>

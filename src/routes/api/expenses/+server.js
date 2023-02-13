@@ -1,28 +1,60 @@
 import { expenses } from "$db/expenses";
 
 export const GET = async () => {
-  const data = await expenses.find().toArray()
-  return new Response(JSON.stringify({
-    expenses: data
-  }, { status: 200 }))
+  try {
+    const data = await expenses.find().toArray()
+    return new Response(JSON.stringify({
+      expenses: data
+    }, { status: 200 }))
+  } catch (error) {
+    return {
+      status: 500,
+      body: {
+        error: 'Server error'
+      }
+    };
+  }
 
 }
 
 export async function POST(request) {
-  const exp = JSON.parse(request.body);
-  const newExp = await expenses.insertOne(exp);
-  return {
-    status: 201,
-    body: {
-      newExp
+  try {
+    const exp = JSON.parse(request.body);
+    await expenses.insertOne(exp);
+    return {
+      status: 201,
+      body: {
+        message: 'Success'
+      }
     }
+  } catch (error) {
+    return {
+      status: 500,
+      body: {
+        error: 'Server error'
+      }
+    };
   }
 }
 
-export async function DEL(id) {
-  expenses.remove({ id: id })
-  return {
-    status: 200
+export async function DELETE(request) {
+  try {
+    const exp = JSON.parse(request.body);
+    await expenses.deleteOne({ _id: ObjectId(exp._id) });
+    return {
+      status: 200,
+      body: {
+        message: 'Success'
+      }
+    }
+  } catch (error) {
+    return {
+      status: 500,
+      body: {
+        error: 'Server error'
+      }
+    };
+
   }
 }
 

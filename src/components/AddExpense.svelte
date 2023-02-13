@@ -1,8 +1,10 @@
 <script>
 	import { v4 as uuidv4 } from 'uuid';
-	import { ExpenseStore } from '../stores';
+	import { createEventDispatcher } from 'svelte';
 	import Card from './Card.svelte';
 	import Button from './Button.svelte';
+
+	const dispatch = createEventDispatcher();
 
 	let title = '';
 	let description = '';
@@ -30,13 +32,6 @@
 			descMsg = null;
 		}
 	};
-	const handleAmtInp = () => {
-		if (amount.trim().length <= min) {
-			message = `Text must be at least ${min} characters`;
-		} else {
-			message = null;
-		}
-	};
 
 	const handleSubmit = async () => {
 		try {
@@ -51,10 +46,7 @@
 					date: new Date().toJSON()
 				};
 
-				await fetch('/api/expenses/server', {
-					method: 'POST',
-					body: JSON.stringify(newExpense)
-				});
+				dispatch('add-expense', newExpense);
 
 				title = '';
 				description = '';
@@ -95,10 +87,11 @@
 		</div>
 		<label for="amount">Amount</label>
 		<div class="input-group">
-			<input name="amount" type="number" bind:value={amount} on:input={handleAmtInp} />
+			<input name="amount" type="number" bind:value={amount} />
 		</div>
 
-		<Button disabled={btnDisabled} type="submit">Send</Button>
+		<!-- <Button disabled={btnDisabled} type="submit">Send</Button> -->
+		<Button type="submit">Send</Button>
 		{#if titleMsg || descMsg}
 			<div class="message">
 				{titleMsg}
