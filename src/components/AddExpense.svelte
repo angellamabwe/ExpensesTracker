@@ -38,22 +38,29 @@
 		}
 	};
 
-	const handleSubmit = () => {
-		if (title.trim().length > titleMin && description.trim().length > descMin) {
-			btnDisabled = false;
+	const handleSubmit = async () => {
+		try {
+			if (title.trim().length > titleMin && description.trim().length > descMin) {
+				btnDisabled = false;
 
-			const newExpense = {
-				id: uuidv4(),
-				title,
-				description,
-				amount,
-				date: new Date().toJSON()
-			};
+				const newExpense = {
+					id: uuidv4(),
+					title,
+					description,
+					amount,
+					date: new Date().toJSON()
+				};
 
-			ExpenseStore.update((currentFeedback) => {
-				return [newExpense, ...currentFeedback];
-			});
+				await fetch('/api/expenses/server', {
+					method: 'POST',
+					body: JSON.stringify(newExpense)
+				});
 
+				title = '';
+				description = '';
+			}
+		} catch (err) {
+			alert('An error occurred');
 			title = '';
 			description = '';
 		}

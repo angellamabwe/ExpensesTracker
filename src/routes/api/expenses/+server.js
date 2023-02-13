@@ -8,7 +8,7 @@ export const GET = async () => {
 
 }
 
-export async function post(request) {
+export async function POST(request) {
   const exp = JSON.parse(request.body);
   const newExp = await expenses.insertOne(exp);
   return {
@@ -19,7 +19,7 @@ export async function post(request) {
   }
 }
 
-export async function del(id) {
+export async function DEL(id) {
   expenses.remove({ id: id })
   return {
     status: 200

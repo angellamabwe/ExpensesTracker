@@ -5,19 +5,12 @@
 	import AddExpense from '../components/AddExpense.svelte';
 	export let data;
 
-	// console.log('data', data);
-	// console.log('dataExpenses', data.expenses);
-
-	// ExpenseStore.update((currentFeedback) => {
-	// 	return [...currentFeedback, ...data.expenses];
-	// });
-
-	ExpenseStore.update(() => {
-		return [...data.expenses];
+	ExpenseStore.update((currentFeedback) => {
+		return [...currentFeedback, ...data.expenses];
 	});
 
-	// ExpenseStore.set((currentFeedback) => {
-	// 	return [...currentFeedback, ...data.expenses];
+	// ExpenseStore.update(() => {
+	// 	return [...data.expenses];
 	// });
 </script>
 
